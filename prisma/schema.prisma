@@ -1,0 +1,49 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Brand {
+  id String @db.Uuid() @unique @default(uuid())
+  name String 
+
+  vehicleModels VehicleModel[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime? @map("updated_at")
+
+}
+
+model VehicleModel {
+  id String @db.Uuid() @unique @default(uuid())
+  name String
+  brandId String @db.Uuid() @map("brand_id") 
+  vehicleModelYears VehicleModelYear[]
+  
+  brand Brand @relation(fields: [brandId], references: [id])
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime? @map("updated_at")
+}
+
+
+model VehicleModelYear {
+   id String @db.Uuid() @unique @default(uuid())
+   name String
+   year Int
+   modelId String @db.Uuid() @map("model_id")
+   plate String
+   renavam String
+
+   model VehicleModel @relation(fields: [modelId], references: [id])
+   createdAt DateTime @default(now()) @map("created_at")
+   updatedAt DateTime? @map("updated_at")
+}
