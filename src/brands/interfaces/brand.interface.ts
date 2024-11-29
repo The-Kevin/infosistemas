@@ -1,3 +1,7 @@
-export default class IBrand {
+export class IBrand {
   name: string;
+}
+
+export class IUpdateBrand {
+  name?: string;
 }

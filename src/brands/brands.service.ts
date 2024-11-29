@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import IBrand from './interfaces/brand.interface';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { IBrand, IUpdateBrand } from './interfaces/brand.interface';
 import { PrismaService } from 'src/database/prisma/prisma.service';
 import { ReturnCreateBrandDTO } from './dtos/brand.dto';
 import IGenericOptions from 'src/utils/interfaces/genericOptions.interface';
@@ -8,7 +8,7 @@ import IGenericOptions from 'src/utils/interfaces/genericOptions.interface';
 export class BrandsService {
   constructor(private prismaService: PrismaService) {}
 
-  async listBrands({ limit, page, sort }: IGenericOptions) {
+  async list({ limit, page, sort }: IGenericOptions) {
     const isDescending = sort.startsWith('-');
     const field = sort.replace('-', '');
     const totalItems = await this.prismaService.brand.count();
@@ -35,6 +35,32 @@ export class BrandsService {
     return await this.prismaService.brand.create({
       data: {
         name: brand.name,
+      },
+    });
+  }
+
+  async update(id: string, data: IUpdateBrand) {
+    const exists = await this.prismaService.brand.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!exists) return new BadRequestException('Brand not exist');
+    return await this.prismaService.brand.update({
+      where: {
+        id,
+      },
+      data,
+    });
+  }
+
+  async delete(ids: string[]): Promise<void> {
+    await this.prismaService.brand.deleteMany({
+      where: {
+        id: {
+          in: ids,
+        },
       },
     });
   }

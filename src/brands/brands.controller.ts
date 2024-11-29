@@ -2,20 +2,29 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
+  HttpCode,
+  Patch,
   Post,
   Query,
 } from '@nestjs/common';
-import { CreateBrandDTO, ReturnCreateBrandDTO } from './dtos/brand.dto';
+import {
+  CreateBrandDTO,
+  DeleteBrandDTO,
+  ReturnCreateBrandDTO,
+  UpdateBrandDTO,
+} from './dtos/brand.dto';
 import { BrandsService } from './brands.service';
 import { isKeyOfInterface } from 'src/utils/handleFunctions';
-import IBrand from './interfaces/brand.interface';
+import { IBrand } from './interfaces/brand.interface';
 
 @Controller('brands')
 export class BrandsController {
   constructor(private brandService: BrandsService) {}
 
   @Get()
+  @HttpCode(200)
   async listBrands(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 10,
@@ -30,16 +39,31 @@ export class BrandsController {
     ) {
       return new BadRequestException('Invalid params');
     }
-    return await this.brandService.listBrands({
+    return await this.brandService.list({
       page,
       limit,
       sort,
     });
   }
   @Post()
+  @HttpCode(201)
   async createBrand(
     @Body() createBrandDto: CreateBrandDTO,
   ): Promise<ReturnCreateBrandDTO> {
     return await this.brandService.create(createBrandDto);
+  }
+
+  @Patch()
+  @HttpCode(204)
+  async updateBrand(@Body() updateBrandDto: UpdateBrandDTO) {
+    const { id, ...remainder } = updateBrandDto;
+    return await this.brandService.update(id, remainder.data);
+  }
+
+  @Delete()
+  @HttpCode(200)
+  async deleteBrand(@Body() data: DeleteBrandDTO): Promise<string> {
+    await this.brandService.delete(data.ids);
+    return 'ok';
   }
 }
