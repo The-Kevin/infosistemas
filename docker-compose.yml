@@ -1,0 +1,15 @@
+services:
+  infosistemas_pg:
+    image: postgres:latest
+    container_name: infosistemas_pg
+    environment:
+      POSTGRES_USER: infosistemas
+      POSTGRES_PASSWORD: info123
+      POSTGRES_DB: infosistemas_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
