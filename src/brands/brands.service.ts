@@ -1,7 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { IBrand, IUpdateBrand } from './interfaces/brand.interface';
+import { IUpdateBrand } from './interfaces/brand.interface';
 import { PrismaService } from 'src/database/prisma/prisma.service';
-import { ReturnCreateBrandDTO, ReturnUpdateBrandDTO } from './dtos/brand.dto';
+import {
+  CreateBrandDTO,
+  ReturnCreateBrandDTO,
+  ReturnUpdateBrandDTO,
+} from './dtos/brand.dto';
 import IGenericOptions from 'src/utils/interfaces/genericOptions.interface';
 
 @Injectable()
@@ -31,7 +35,7 @@ export class BrandsService {
       },
     };
   }
-  async create(brand: IBrand): Promise<ReturnCreateBrandDTO> {
+  async create(brand: CreateBrandDTO): Promise<ReturnCreateBrandDTO> {
     return await this.prismaService.brand.create({
       data: {
         name: brand.name,
