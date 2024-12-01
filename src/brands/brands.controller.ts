@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -18,13 +17,14 @@ import {
   UpdateBrandDTO,
 } from './dtos/brand.dto';
 import { BrandsService } from './brands.service';
-import { isKeyOfInterface } from 'src/utils/handleFunctions';
-import { IBrand } from './interfaces/brand.interface';
 import {
+  ApiBadRequestResponse,
   ApiCreatedResponse,
   ApiOkResponse,
+  ApiResponse,
   getSchemaPath,
 } from '@nestjs/swagger';
+import GenericHttpBadRequestResponse from 'src/utils/interfaces/genericHttpBadRequestResponse.interface';
 
 @Controller('brands')
 export class BrandsController {
@@ -39,21 +39,17 @@ export class BrandsController {
     },
     isArray: true,
   })
+  @ApiBadRequestResponse({
+    type: GenericHttpBadRequestResponse,
+  })
   @HttpCode(200)
   async listBrands(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 10,
     @Query('sort') sort: string = 'name',
-  ) {
+  ): Promise<ReturnListBrandsDTO> {
     limit = Math.min(limit, 100);
-    const handleSort = sort.replace('-', '');
 
-    if (
-      !isKeyOfInterface(handleSort, IBrand) ||
-      (typeof page || typeof limit) != 'number'
-    ) {
-      return new BadRequestException('Invalid params');
-    }
     return await this.brandService.list({
       page,
       limit,
@@ -68,6 +64,9 @@ export class BrandsController {
     schema: {
       $ref: getSchemaPath(ReturnCreateBrandDTO),
     },
+  })
+  @ApiBadRequestResponse({
+    type: GenericHttpBadRequestResponse,
   })
   @HttpCode(201)
   async createBrand(
@@ -84,7 +83,10 @@ export class BrandsController {
       $ref: getSchemaPath(ReturnUpdateBrandDTO),
     },
   })
-  @HttpCode(204)
+  @ApiBadRequestResponse({
+    type: GenericHttpBadRequestResponse,
+  })
+  @HttpCode(200)
   async updateBrand(
     @Body() updateBrandDto: UpdateBrandDTO,
   ): Promise<ReturnUpdateBrandDTO> {
@@ -92,13 +94,15 @@ export class BrandsController {
   }
 
   @Delete()
-  @ApiOkResponse({
+  @ApiResponse({
+    status: 204,
     description: 'Delete brands',
-    type: 'string',
   })
-  @HttpCode(200)
-  async deleteBrand(@Body() data: DeleteBrandDTO): Promise<string> {
+  @ApiBadRequestResponse({
+    type: GenericHttpBadRequestResponse,
+  })
+  @HttpCode(204)
+  async deleteBrand(@Body() data: DeleteBrandDTO): Promise<void> {
     await this.brandService.delete(data.ids);
-    return 'ok';
   }
 }

@@ -5,7 +5,9 @@ import { ApiProperty } from '@nestjs/swagger';
 import GenericListMetadata from 'src/utils/interfaces/genericListMetadata.interface';
 
 export class CreateBrandDTO {
-  @ApiProperty()
+  @ApiProperty({
+    required: true,
+  })
   @MaxLength(255)
   name: string;
 }
@@ -39,16 +41,23 @@ export class ReturnListBrandsDTO {
   meta: GenericListMetadata;
 }
 export class UpdateBrandDTO {
-  @ApiProperty()
+  @ApiProperty({
+    required: true,
+  })
   @IsUUID()
   id: string;
 
-  @ApiProperty({ type: IBrand, required: false })
+  @ApiProperty({
+    required: false,
+    type: IBrand,
+  })
   body: Partial<IBrand>;
 }
 
 export class DeleteBrandDTO {
-  @ApiProperty()
+  @ApiProperty({
+    required: true,
+  })
   @ArrayNotEmpty()
   ids: string[];
 }
