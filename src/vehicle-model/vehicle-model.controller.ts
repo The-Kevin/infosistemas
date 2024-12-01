@@ -12,6 +12,7 @@ import { VehicleModelService } from './vehicle-model.service';
 import {
   CreateVehicleModelDto,
   DeleteVehicleModelDTO,
+  ListVehicleModelDto,
   ReturnListVehicleModelDto,
   UpdateVehicleModelDto,
 } from './dtos/vehicle-model.dto';
@@ -44,10 +45,9 @@ export class VehicleModelController {
   })
   @HttpCode(200)
   async listVehicleModel(
-    @Query('page') page: number = 1,
-    @Query('limit') limit: number = 10,
-    @Query('sort') sort: string = 'name',
+    @Query() query: ListVehicleModelDto,
   ): Promise<ReturnListVehicleModelDto> {
+    const { limit, page, sort } = query;
     return await this.vehicleModelService.list({
       limit,
       page,

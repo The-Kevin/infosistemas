@@ -11,6 +11,7 @@ import {
 import {
   CreateBrandDTO,
   DeleteBrandDTO,
+  ListBrandDto,
   ReturnListBrandsDTO,
   UpdateBrandDTO,
 } from './dtos/brand.dto';
@@ -43,13 +44,8 @@ export class BrandsController {
     type: GenericHttpBadRequestResponse,
   })
   @HttpCode(200)
-  async listBrands(
-    @Query('page') page: number = 1,
-    @Query('limit') limit: number = 10,
-    @Query('sort') sort: string = 'name',
-  ): Promise<ReturnListBrandsDTO> {
-    limit = Math.min(limit, 100);
-
+  async listBrands(@Query() query: ListBrandDto): Promise<ReturnListBrandsDTO> {
+    const { limit, page, sort } = query;
     return await this.brandService.list({
       page,
       limit,

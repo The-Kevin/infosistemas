@@ -13,6 +13,7 @@ import { VehicleModelYearService } from './vehicle-model-year.service';
 import {
   CreateVehicleModelYearDto,
   DeleteVehicleModelYearsDTO,
+  ListVehicleModelYearDto,
   ReturnListVehicleModelYearDto,
   UpdateVehicleModelYearDto,
 } from './dtos/vehicle-model-year.dto';
@@ -60,10 +61,9 @@ export class VehicleModelYearController {
   })
   @HttpCode(200)
   async listVehicleModelYear(
-    @Query('page') page: number = 1,
-    @Query('limit') limit: number = 10,
-    @Query('sort') sort: string = 'name',
+    @Query() query: ListVehicleModelYearDto,
   ): Promise<ReturnListVehicleModelYearDto> {
+    const { page, limit, sort } = query;
     return await this.vehicleModelYearService.list({
       page,
       limit,
