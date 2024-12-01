@@ -1,8 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-import IGenericModel from 'src/utils/interfaces/genericModel.interface';
-
-export class IVehicleModelYear extends IGenericModel {
+export class IVehicleModelYear {
   @ApiProperty()
   name: string;
   @ApiProperty()

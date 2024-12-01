@@ -4,9 +4,10 @@ import {
   CreateVehicleModelDto,
   ReturnCreateVehicleModelDto,
   ReturnListVehicleModelDto,
+  ReturnUpdateVehicleModelDto,
+  UpdateVehicleModelDto,
 } from './dtos/vehicle-model.dto';
 import IGenericOptions from 'src/utils/interfaces/genericOptions.interface';
-import { IVehicleModel } from './interfaces/vehicle-model.interface';
 
 @Injectable()
 export class VehicleModelService {
@@ -20,32 +21,11 @@ export class VehicleModelService {
       });
 
       if (!brand) throw new BadRequestException('Brand not exist');
-      const theresVehicleModelYearsIds = data.vehicleModelYearIds?.length > 0;
-      if (theresVehicleModelYearsIds) {
-        const vehicleModelYears = await tx.vehicleModelYear.findMany({
-          where: { id: { in: data.vehicleModelYearIds } },
-        });
 
-        const foundIds = vehicleModelYears.map((year) => year.id);
-        const invalidIds = data.vehicleModelYearIds.filter(
-          (id) => !foundIds.includes(id),
-        );
-
-        if (invalidIds.length > 0) {
-          throw new BadRequestException(
-            `Invalid vehicle model year IDs: ${invalidIds.join(', ')}`,
-          );
-        }
-      }
       return tx.vehicleModel.create({
         data: {
           name: data.name,
           brand: { connect: { id: brand.id } },
-          ...(theresVehicleModelYearsIds && {
-            vehicleModelYears: {
-              connect: data.vehicleModelYearIds?.map((id) => ({ id })) || [],
-            },
-          }),
         },
         include: {
           brand: true,
@@ -87,19 +67,18 @@ export class VehicleModelService {
   }
 
   async update(
-    id: string,
-    data: { name: string; brandId?: string }, //insert fields according improve model
-  ): Promise<IVehicleModel> {
+    data: UpdateVehicleModelDto,
+  ): Promise<ReturnUpdateVehicleModelDto> {
     return await this.prismaService.vehicleModel.update({
       where: {
-        id,
+        id: data.id,
       },
       data: {
-        name: data.name,
-        ...(data.brandId && {
+        name: data.body?.name,
+        ...(data.body?.brandId && {
           brand: {
             connect: {
-              id: data.brandId,
+              id: data.body.brandId,
             },
           },
         }),

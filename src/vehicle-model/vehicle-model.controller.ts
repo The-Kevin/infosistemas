@@ -11,17 +11,37 @@ import {
 import { VehicleModelService } from './vehicle-model.service';
 import {
   CreateVehicleModelDto,
+  DeleteVehicleModelDTO,
   ReturnCreateVehicleModelDto,
   ReturnListVehicleModelDto,
+  ReturnUpdateVehicleModelDto,
   UpdateVehicleModelDto,
 } from './dtos/vehicle-model.dto';
-import { IVehicleModel } from './interfaces/vehicle-model.interface';
+import {
+  ApiBadRequestResponse,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiResponse,
+  getSchemaPath,
+} from '@nestjs/swagger';
+import GenericHttpBadRequestResponse from 'src/utils/interfaces/genericHttpBadRequestResponse.interface';
 
 @Controller('vehicle-model')
 export class VehicleModelController {
   constructor(private vehicleModelService: VehicleModelService) {}
 
   @Get()
+  @ApiOkResponse({
+    description: 'List of vehicle models',
+    type: ReturnListVehicleModelDto,
+    schema: {
+      $ref: getSchemaPath(ReturnListVehicleModelDto),
+    },
+    isArray: true,
+  })
+  @ApiBadRequestResponse({
+    type: GenericHttpBadRequestResponse,
+  })
   @HttpCode(200)
   async listVehicleModel(
     @Query('page') page: number = 1,
@@ -36,6 +56,16 @@ export class VehicleModelController {
   }
 
   @Post()
+  @ApiCreatedResponse({
+    description: 'Create vehicle model',
+    type: ReturnCreateVehicleModelDto,
+    schema: {
+      $ref: getSchemaPath(ReturnCreateVehicleModelDto),
+    },
+  })
+  @ApiBadRequestResponse({
+    type: GenericHttpBadRequestResponse,
+  })
   @HttpCode(201)
   async createVehicleModel(
     @Body() data: CreateVehicleModelDto,
@@ -45,18 +75,33 @@ export class VehicleModelController {
 
   @Patch()
   @HttpCode(200)
+  @ApiOkResponse({
+    description: 'Update vehicle model',
+    type: ReturnUpdateVehicleModelDto,
+    schema: {
+      $ref: getSchemaPath(ReturnUpdateVehicleModelDto),
+    },
+    isArray: true,
+  })
+  @ApiBadRequestResponse({
+    type: GenericHttpBadRequestResponse,
+  })
   async updateVehicleModel(
     @Body() data: UpdateVehicleModelDto,
-  ): Promise<IVehicleModel> {
-    return await this.vehicleModelService.update(data.id, {
-      brandId: data.body.brandId,
-      name: data.body.name,
-    });
+  ): Promise<ReturnUpdateVehicleModelDto> {
+    return await this.vehicleModelService.update(data);
   }
 
   @Delete()
+  @ApiResponse({
+    status: 204,
+    description: 'Delete vehicle model',
+  })
+  @ApiBadRequestResponse({
+    type: GenericHttpBadRequestResponse,
+  })
   @HttpCode(204)
-  async deleteVehicleModel(@Body() data: { ids: string[] }): Promise<void> {
+  async deleteVehicleModel(@Body() data: DeleteVehicleModelDTO): Promise<void> {
     await this.vehicleModelService.delete(data.ids);
   }
 }

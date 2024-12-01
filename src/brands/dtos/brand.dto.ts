@@ -52,6 +52,7 @@ export class DeleteBrandDTO {
   @ApiProperty({
     required: true,
     isArray: true,
+    type: 'string',
   })
   @ArrayNotEmpty()
   ids: string[];
