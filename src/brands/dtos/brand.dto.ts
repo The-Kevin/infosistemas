@@ -8,10 +8,11 @@ import {
   IsString,
   IsUUID,
   MaxLength,
+  ValidateNested,
 } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, PartialType } from '@nestjs/swagger';
 import GenericListMetadata from 'src/utils/interfaces/genericListMetadata.interface';
-import { Transform } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { isKeyOfInterface } from 'src/utils/handleFunctions';
 export class HandleIBrand extends IGenericModel {
   @ApiProperty()
@@ -60,6 +61,7 @@ export class ReturnListBrandsDTO {
   @ApiProperty({ type: GenericListMetadata })
   meta: GenericListMetadata;
 }
+
 export class UpdateBrandDTO {
   @ApiProperty({
     required: true,
@@ -69,9 +71,11 @@ export class UpdateBrandDTO {
 
   @ApiProperty({
     required: false,
-    type: IBrand,
+    type: () => PartialType(IBrand),
   })
-  body: Partial<IBrand>;
+  @ValidateNested()
+  @Type(() => PartialType(IBrand))
+  body?: Partial<IBrand>;
 }
 
 export class DeleteBrandDTO {

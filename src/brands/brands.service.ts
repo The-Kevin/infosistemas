@@ -5,8 +5,10 @@ import {
   ReturnListBrandsDTO,
   UpdateBrandDTO,
 } from './dtos/brand.dto';
-import IGenericOptions from 'src/utils/interfaces/genericOptions.interface';
+import IGenericOptions from '../utils/interfaces/genericOptions.interface';
 import { IBrand } from './interfaces/brand.interface';
+import { removeRepeatingKeys } from '../utils/handleFunctions';
+import IGenericModel from '../utils/interfaces/genericModel.interface';
 
 @Injectable()
 export class BrandsService {
@@ -55,6 +57,8 @@ export class BrandsService {
   }
 
   async update(data: UpdateBrandDTO): Promise<IBrand> {
+    const handle = removeRepeatingKeys(data.body, IGenericModel);
+
     const exists = await this.prismaService.brand.findUnique({
       where: {
         id: data.id,
@@ -67,7 +71,7 @@ export class BrandsService {
         id: data.id,
       },
       data: {
-        ...data.body,
+        ...handle,
         updatedAt: new Date(),
       },
     });
