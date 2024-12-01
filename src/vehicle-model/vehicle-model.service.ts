@@ -102,16 +102,19 @@ export class VehicleModelService {
             },
           },
         }),
+        updatedAt: new Date(),
       },
       include: {
         brand: true,
       },
     });
   }
-  async delete(id: string): Promise<void> {
-    await this.prismaService.vehicleModelYear.delete({
+  async delete(ids: string[]): Promise<void> {
+    await this.prismaService.vehicleModel.deleteMany({
       where: {
-        id,
+        id: {
+          in: ids,
+        },
       },
     });
   }

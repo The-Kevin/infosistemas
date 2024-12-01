@@ -4,7 +4,6 @@ import {
   Delete,
   Get,
   HttpCode,
-  Param,
   Patch,
   Post,
   Query,
@@ -16,6 +15,7 @@ import {
   ReturnListVehicleModelDto,
   UpdateVehicleModelDto,
 } from './dtos/vehicle-model.dto';
+import { IVehicleModel } from './interfaces/vehicle-model.interface';
 
 @Controller('vehicle-model')
 export class VehicleModelController {
@@ -44,8 +44,10 @@ export class VehicleModelController {
   }
 
   @Patch()
-  @HttpCode(204)
-  async updateVehicleModel(@Body() data: UpdateVehicleModelDto) {
+  @HttpCode(200)
+  async updateVehicleModel(
+    @Body() data: UpdateVehicleModelDto,
+  ): Promise<IVehicleModel> {
     return await this.vehicleModelService.update(data.id, {
       brandId: data.body.brandId,
       name: data.body.name,
@@ -53,9 +55,8 @@ export class VehicleModelController {
   }
 
   @Delete()
-  @HttpCode(200)
-  async deleteVehicleModel(@Param('id') id: string): Promise<string> {
-    await this.vehicleModelService.delete(id);
-    return 'ok';
+  @HttpCode(204)
+  async deleteVehicleModel(@Body() data: { ids: string[] }): Promise<void> {
+    await this.vehicleModelService.delete(data.ids);
   }
 }
