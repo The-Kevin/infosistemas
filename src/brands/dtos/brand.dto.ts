@@ -44,7 +44,7 @@ export class UpdateBrandDTO {
   id: string;
 
   @ApiProperty({ type: IBrand, required: false })
-  data: Partial<IBrand>;
+  body: Partial<IBrand>;
 }
 
 export class DeleteBrandDTO {

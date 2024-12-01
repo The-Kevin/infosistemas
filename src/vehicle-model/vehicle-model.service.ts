@@ -71,6 +71,7 @@ export class VehicleModelService {
       },
       include: {
         brand: true,
+        vehicleModelYears: true,
       },
     });
 
@@ -106,9 +107,11 @@ export class VehicleModelService {
       },
       include: {
         brand: true,
+        vehicleModelYears: true,
       },
     });
   }
+
   async delete(ids: string[]): Promise<void> {
     await this.prismaService.vehicleModel.deleteMany({
       where: {

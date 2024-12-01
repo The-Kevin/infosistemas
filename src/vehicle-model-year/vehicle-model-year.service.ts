@@ -92,6 +92,7 @@ export class VehicleModelYearService {
         ...(modelId && {
           model: { connect: { id: modelId } },
         }),
+        updatedAt: new Date(),
       },
       include: {
         model: { include: { brand: true } },

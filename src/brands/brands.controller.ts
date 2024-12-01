@@ -88,9 +88,7 @@ export class BrandsController {
   async updateBrand(
     @Body() updateBrandDto: UpdateBrandDTO,
   ): Promise<ReturnUpdateBrandDTO> {
-    const { id, ...remainder } = updateBrandDto;
-
-    return await this.brandService.update(id, remainder.data);
+    return await this.brandService.update(updateBrandDto);
   }
 
   @Delete()

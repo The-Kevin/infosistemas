@@ -1,10 +1,10 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { IUpdateBrand } from './interfaces/brand.interface';
 import { PrismaService } from 'src/database/prisma/prisma.service';
 import {
   CreateBrandDTO,
   ReturnCreateBrandDTO,
   ReturnUpdateBrandDTO,
+  UpdateBrandDTO,
 } from './dtos/brand.dto';
 import IGenericOptions from 'src/utils/interfaces/genericOptions.interface';
 
@@ -22,6 +22,13 @@ export class BrandsService {
       take: limit,
       orderBy: {
         [field]: isDescending ? 'desc' : 'asc',
+      },
+      include: {
+        vehicleModels: {
+          include: {
+            vehicleModelYears: true,
+          },
+        },
       },
     });
 
@@ -43,20 +50,20 @@ export class BrandsService {
     });
   }
 
-  async update(id: string, data: IUpdateBrand): Promise<ReturnUpdateBrandDTO> {
+  async update(data: UpdateBrandDTO): Promise<ReturnUpdateBrandDTO> {
     const exists = await this.prismaService.brand.findUnique({
       where: {
-        id,
+        id: data.id,
       },
     });
 
     if (!exists) throw new BadRequestException('Brand not exist');
     return await this.prismaService.brand.update({
       where: {
-        id,
+        id: data.id,
       },
       data: {
-        ...data,
+        ...data.body,
         updatedAt: new Date(),
       },
     });
