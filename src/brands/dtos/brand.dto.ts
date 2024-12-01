@@ -22,15 +22,9 @@ export class ReturnUpdateBrandDTO extends IGenericModel {
   name: string;
 }
 
-class ReturnListDataBrandsDTO {
+class ReturnListDataBrandsDTO extends IGenericModel {
   @ApiProperty()
   name: string;
-  @ApiProperty()
-  id: string;
-  @ApiProperty()
-  createdAt: Date;
-  @ApiProperty()
-  updatedAt: Date | null;
 }
 
 export class ReturnListBrandsDTO {
@@ -57,6 +51,7 @@ export class UpdateBrandDTO {
 export class DeleteBrandDTO {
   @ApiProperty({
     required: true,
+    isArray: true,
   })
   @ArrayNotEmpty()
   ids: string[];

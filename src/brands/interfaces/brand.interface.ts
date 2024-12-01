@@ -4,8 +4,3 @@ export class IBrand {
   @ApiProperty()
   name: string;
 }
-
-export class IUpdateBrand {
-  @ApiProperty()
-  name?: string;
-}
