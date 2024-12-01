@@ -17,63 +17,22 @@ export class CreateVehicleModelDto {
   })
   brandId: string;
 }
-export class ReturnCreateVehicleModelDto extends IGenericModel {
-  @ApiProperty()
-  name: string;
-  @ApiProperty()
-  brand: IBrand;
-}
 
-class HandleIBrand extends IGenericModel {
-  // copy of IBrand
-  @ApiProperty()
-  name: string;
-}
-class HandleIVehicleModelYear extends IGenericModel {
-  // copy of IVehicleModelYear
-  @ApiProperty()
-  name: string;
-  @ApiProperty()
-  year: number;
-  @ApiProperty()
-  plate: string;
-  @ApiProperty()
-  renavam: string;
-}
-
-class ReturnListVehicleModelDataDto extends IGenericModel {
-  @ApiProperty()
-  name: string;
-  @ApiProperty({ type: HandleIBrand })
-  brand: IBrand & IGenericModel;
-  @ApiProperty({ type: HandleIVehicleModelYear, isArray: true })
-  vehicleModelYears: (IVehicleModelYear & IGenericModel)[];
-}
 export class ReturnListVehicleModelDto {
   @ApiProperty({
     isArray: true,
-    type: ReturnListVehicleModelDataDto,
+    type: () => IVehicleModel,
   })
-  data: ReturnListVehicleModelDataDto[];
+  data: IVehicleModel[];
   @ApiProperty({ type: GenericListMetadata })
   meta: GenericListMetadata;
 }
 
-class UpdateVehicleModelBodyDto {
-  @ApiProperty({
-    required: false,
-  })
-  name: string;
-  @ApiProperty({
-    required: false,
-  })
-  brandId: string;
-}
 export class UpdateVehicleModelDto {
   @ApiProperty()
   id: string;
   @ApiProperty({
-    type: UpdateVehicleModelBodyDto,
+    type: IVehicleModel,
   })
   body: ExcludeGenericProps<
     Partial<IVehicleModel>,
@@ -82,15 +41,6 @@ export class UpdateVehicleModelDto {
       vehicleModelYears: Exclude<IVehicleModelYear, { model: IVehicleModel }>[];
     }
   > & { brandId?: string };
-}
-
-export class ReturnUpdateVehicleModelDto extends IGenericModel {
-  @ApiProperty()
-  name: string;
-  @ApiProperty({ type: HandleIBrand })
-  brand: IBrand & IGenericModel;
-  @ApiProperty({ type: HandleIVehicleModelYear, isArray: true })
-  vehicleModelYears: (IVehicleModelYear & IGenericModel)[];
 }
 
 export class DeleteVehicleModelDTO {

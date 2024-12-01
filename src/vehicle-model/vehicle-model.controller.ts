@@ -12,9 +12,7 @@ import { VehicleModelService } from './vehicle-model.service';
 import {
   CreateVehicleModelDto,
   DeleteVehicleModelDTO,
-  ReturnCreateVehicleModelDto,
   ReturnListVehicleModelDto,
-  ReturnUpdateVehicleModelDto,
   UpdateVehicleModelDto,
 } from './dtos/vehicle-model.dto';
 import {
@@ -23,8 +21,10 @@ import {
   ApiOkResponse,
   ApiResponse,
   getSchemaPath,
+  OmitType,
 } from '@nestjs/swagger';
 import GenericHttpBadRequestResponse from 'src/utils/interfaces/genericHttpBadRequestResponse.interface';
+import { IVehicleModel } from './interfaces/vehicle-model.interface';
 
 @Controller('vehicle-model')
 export class VehicleModelController {
@@ -58,9 +58,9 @@ export class VehicleModelController {
   @Post()
   @ApiCreatedResponse({
     description: 'Create vehicle model',
-    type: ReturnCreateVehicleModelDto,
+    type: OmitType(IVehicleModel, ['vehicleModelYears']),
     schema: {
-      $ref: getSchemaPath(ReturnCreateVehicleModelDto),
+      $ref: getSchemaPath(IVehicleModel),
     },
   })
   @ApiBadRequestResponse({
@@ -69,7 +69,7 @@ export class VehicleModelController {
   @HttpCode(201)
   async createVehicleModel(
     @Body() data: CreateVehicleModelDto,
-  ): Promise<ReturnCreateVehicleModelDto> {
+  ): Promise<IVehicleModel> {
     return await this.vehicleModelService.create(data);
   }
 
@@ -77,9 +77,9 @@ export class VehicleModelController {
   @HttpCode(200)
   @ApiOkResponse({
     description: 'Update vehicle model',
-    type: ReturnUpdateVehicleModelDto,
+    type: IVehicleModel,
     schema: {
-      $ref: getSchemaPath(ReturnUpdateVehicleModelDto),
+      $ref: getSchemaPath(IVehicleModel),
     },
     isArray: true,
   })
@@ -88,7 +88,7 @@ export class VehicleModelController {
   })
   async updateVehicleModel(
     @Body() data: UpdateVehicleModelDto,
-  ): Promise<ReturnUpdateVehicleModelDto> {
+  ): Promise<IVehicleModel> {
     return await this.vehicleModelService.update(data);
   }
 

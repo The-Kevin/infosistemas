@@ -4,7 +4,7 @@ import GenericListMetadata from 'src/utils/interfaces/genericListMetadata.interf
 import IGenericModel from 'src/utils/interfaces/genericModel.interface';
 import ExcludeGenericProps from 'src/utils/interfaces/excludeProps.interface';
 import { IVehicleModel } from 'src/vehicle-model/interfaces/vehicle-model.interface';
-import { MaxLength, MinLength } from 'class-validator';
+import { ArrayNotEmpty, MaxLength, MinLength } from 'class-validator';
 
 export class CreateVehicleModelYearDto {
   @ApiProperty()
@@ -24,7 +24,7 @@ export class CreateVehicleModelYearDto {
 }
 
 export class ReturnListVehicleModelYearDto {
-  @ApiProperty({ type: IVehicleModelYear, isArray: true })
+  @ApiProperty({ type: () => IVehicleModelYear, isArray: true })
   data: IVehicleModelYear[];
   @ApiProperty({ type: GenericListMetadata })
   meta: GenericListMetadata;
@@ -40,4 +40,13 @@ export class UpdateVehicleModelYearDto {
       modelId: string;
     }
   >;
+}
+export class DeleteVehicleModelYearsDTO {
+  @ApiProperty({
+    required: true,
+    isArray: true,
+    type: 'string',
+  })
+  @ArrayNotEmpty()
+  ids: string[];
 }

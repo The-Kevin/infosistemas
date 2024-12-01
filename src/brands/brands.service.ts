@@ -2,17 +2,21 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma/prisma.service';
 import {
   CreateBrandDTO,
-  ReturnCreateBrandDTO,
-  ReturnUpdateBrandDTO,
+  ReturnListBrandsDTO,
   UpdateBrandDTO,
 } from './dtos/brand.dto';
 import IGenericOptions from 'src/utils/interfaces/genericOptions.interface';
+import { IBrand } from './interfaces/brand.interface';
 
 @Injectable()
 export class BrandsService {
   constructor(private prismaService: PrismaService) {}
 
-  async list({ limit, page, sort }: IGenericOptions) {
+  async list({
+    limit,
+    page,
+    sort,
+  }: IGenericOptions): Promise<ReturnListBrandsDTO> {
     const isDescending = sort.startsWith('-');
     const field = sort.replace('-', '');
     const totalItems = await this.prismaService.brand.count();
@@ -42,7 +46,7 @@ export class BrandsService {
       },
     };
   }
-  async create(brand: CreateBrandDTO): Promise<ReturnCreateBrandDTO> {
+  async create(brand: CreateBrandDTO): Promise<IBrand> {
     return await this.prismaService.brand.create({
       data: {
         name: brand.name,
@@ -50,7 +54,7 @@ export class BrandsService {
     });
   }
 
-  async update(data: UpdateBrandDTO): Promise<ReturnUpdateBrandDTO> {
+  async update(data: UpdateBrandDTO): Promise<IBrand> {
     const exists = await this.prismaService.brand.findUnique({
       where: {
         id: data.id,

@@ -11,9 +11,7 @@ import {
 import {
   CreateBrandDTO,
   DeleteBrandDTO,
-  ReturnCreateBrandDTO,
   ReturnListBrandsDTO,
-  ReturnUpdateBrandDTO,
   UpdateBrandDTO,
 } from './dtos/brand.dto';
 import { BrandsService } from './brands.service';
@@ -23,8 +21,10 @@ import {
   ApiOkResponse,
   ApiResponse,
   getSchemaPath,
+  OmitType,
 } from '@nestjs/swagger';
 import GenericHttpBadRequestResponse from 'src/utils/interfaces/genericHttpBadRequestResponse.interface';
+import { IBrand } from './interfaces/brand.interface';
 
 @Controller('brands')
 export class BrandsController {
@@ -60,36 +60,32 @@ export class BrandsController {
   @Post()
   @ApiCreatedResponse({
     description: 'Create brands',
-    type: ReturnCreateBrandDTO,
+    type: OmitType(IBrand, ['models']),
     schema: {
-      $ref: getSchemaPath(ReturnCreateBrandDTO),
+      $ref: getSchemaPath(IBrand),
     },
   })
   @ApiBadRequestResponse({
     type: GenericHttpBadRequestResponse,
   })
   @HttpCode(201)
-  async createBrand(
-    @Body() createBrandDto: CreateBrandDTO,
-  ): Promise<ReturnCreateBrandDTO> {
+  async createBrand(@Body() createBrandDto: CreateBrandDTO): Promise<IBrand> {
     return await this.brandService.create(createBrandDto);
   }
 
   @Patch()
   @ApiOkResponse({
     description: 'Update brands',
-    type: ReturnUpdateBrandDTO,
+    type: IBrand,
     schema: {
-      $ref: getSchemaPath(ReturnUpdateBrandDTO),
+      $ref: getSchemaPath(IBrand),
     },
   })
   @ApiBadRequestResponse({
     type: GenericHttpBadRequestResponse,
   })
   @HttpCode(200)
-  async updateBrand(
-    @Body() updateBrandDto: UpdateBrandDTO,
-  ): Promise<ReturnUpdateBrandDTO> {
+  async updateBrand(@Body() updateBrandDto: UpdateBrandDTO): Promise<IBrand> {
     return await this.brandService.update(updateBrandDto);
   }
 

@@ -2,19 +2,16 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma/prisma.service';
 import {
   CreateVehicleModelDto,
-  ReturnCreateVehicleModelDto,
   ReturnListVehicleModelDto,
-  ReturnUpdateVehicleModelDto,
   UpdateVehicleModelDto,
 } from './dtos/vehicle-model.dto';
 import IGenericOptions from 'src/utils/interfaces/genericOptions.interface';
+import { IVehicleModel } from './interfaces/vehicle-model.interface';
 
 @Injectable()
 export class VehicleModelService {
   constructor(private prismaService: PrismaService) {}
-  async create(
-    data: CreateVehicleModelDto,
-  ): Promise<ReturnCreateVehicleModelDto> {
+  async create(data: CreateVehicleModelDto): Promise<IVehicleModel> {
     return await this.prismaService.$transaction(async (tx) => {
       const brand = await this.prismaService.brand.findUnique({
         where: { id: data.brandId },
@@ -66,9 +63,7 @@ export class VehicleModelService {
     };
   }
 
-  async update(
-    data: UpdateVehicleModelDto,
-  ): Promise<ReturnUpdateVehicleModelDto> {
+  async update(data: UpdateVehicleModelDto): Promise<IVehicleModel> {
     return await this.prismaService.vehicleModel.update({
       where: {
         id: data.id,

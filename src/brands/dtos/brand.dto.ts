@@ -3,6 +3,10 @@ import { IBrand } from '../interfaces/brand.interface';
 import { ArrayNotEmpty, IsUUID, MaxLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import GenericListMetadata from 'src/utils/interfaces/genericListMetadata.interface';
+export class HandleIBrand extends IGenericModel {
+  @ApiProperty()
+  name: string;
+}
 
 export class CreateBrandDTO {
   @ApiProperty({
@@ -12,24 +16,9 @@ export class CreateBrandDTO {
   name: string;
 }
 
-export class ReturnCreateBrandDTO extends IGenericModel {
-  @ApiProperty()
-  name: string;
-}
-
-export class ReturnUpdateBrandDTO extends IGenericModel {
-  @ApiProperty()
-  name: string;
-}
-
-class ReturnListDataBrandsDTO extends IGenericModel {
-  @ApiProperty()
-  name: string;
-}
-
 export class ReturnListBrandsDTO {
-  @ApiProperty({ type: ReturnListDataBrandsDTO })
-  data: ReturnListDataBrandsDTO[];
+  @ApiProperty({ type: IBrand })
+  data: IBrand[];
 
   @ApiProperty({ type: GenericListMetadata })
   meta: GenericListMetadata;

@@ -9,7 +9,9 @@ describe('VehicleModelYearController', () => {
       controllers: [VehicleModelYearController],
     }).compile();
 
-    controller = module.get<VehicleModelYearController>(VehicleModelYearController);
+    controller = module.get<VehicleModelYearController>(
+      VehicleModelYearController,
+    );
   });
 
   it('should be defined', () => {

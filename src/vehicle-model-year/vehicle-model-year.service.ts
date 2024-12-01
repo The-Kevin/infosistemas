@@ -35,6 +35,7 @@ export class VehicleModelYearService {
       include: {
         model: {
           include: {
+            vehicleModelYears: false,
             brand: true,
           },
         },
