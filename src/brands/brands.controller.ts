@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   HttpCode,
+  Param,
   Patch,
   Post,
   Query,
@@ -11,6 +12,7 @@ import {
 import {
   CreateBrandDTO,
   DeleteBrandDTO,
+  GetBrandDto,
   ListBrandDto,
   ReturnListBrandsDTO,
   UpdateBrandDTO,
@@ -30,6 +32,23 @@ import { IBrand } from './interfaces/brand.interface';
 @Controller('brands')
 export class BrandsController {
   constructor(private brandService: BrandsService) {}
+
+  @Get(':id')
+  @ApiOkResponse({
+    description: 'Get one brand',
+    type: IBrand,
+    schema: {
+      $ref: getSchemaPath(IBrand),
+    },
+    isArray: true,
+  })
+  @ApiBadRequestResponse({
+    type: GenericHttpBadRequestResponse,
+  })
+  @HttpCode(200)
+  async getBrand(@Param() param: GetBrandDto) {
+    return await this.brandService.get(param.id);
+  }
 
   @Get()
   @ApiOkResponse({
@@ -56,7 +75,7 @@ export class BrandsController {
   @Post()
   @ApiCreatedResponse({
     description: 'Create brands',
-    type: OmitType(IBrand, ['models']),
+    type: OmitType(IBrand, ['vehicleModels']),
     schema: {
       $ref: getSchemaPath(IBrand),
     },

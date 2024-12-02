@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../database/prisma/prisma.service';
 import {
   CreateBrandDTO,
@@ -13,6 +17,23 @@ import IGenericModel from '../utils/interfaces/genericModel.interface';
 @Injectable()
 export class BrandsService {
   constructor(private prismaService: PrismaService) {}
+
+  async get(id: string): Promise<IBrand> {
+    const brand = await this.prismaService.brand.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        vehicleModels: {
+          include: {
+            vehicleModelYears: true,
+          },
+        },
+      },
+    });
+    if (!brand) throw new NotFoundException(['Brand not founded']);
+    return brand;
+  }
 
   async list({
     limit,
@@ -52,6 +73,13 @@ export class BrandsService {
     return await this.prismaService.brand.create({
       data: {
         name: brand.name,
+      },
+      include: {
+        vehicleModels: {
+          include: {
+            vehicleModelYears: true,
+          },
+        },
       },
     });
   }
