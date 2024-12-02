@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   HttpCode,
+  Param,
   Patch,
   Post,
   Query,
@@ -13,6 +14,7 @@ import { VehicleModelYearService } from './vehicle-model-year.service';
 import {
   CreateVehicleModelYearDto,
   DeleteVehicleModelYearsDTO,
+  GetVehicleModelYearDto,
   ListVehicleModelYearDto,
   ReturnListVehicleModelYearDto,
   UpdateVehicleModelYearDto,
@@ -30,22 +32,20 @@ import GenericHttpBadRequestResponse from 'src/utils/interfaces/genericHttpBadRe
 export class VehicleModelYearController {
   constructor(private vehicleModelYearService: VehicleModelYearService) {}
 
-  @Post()
-  @ApiCreatedResponse({
-    description: 'Create vehicle model year',
+  @Get(':id')
+  @ApiOkResponse({
+    description: 'Get one vehicle model year',
     type: IVehicleModelYear,
     schema: {
       $ref: getSchemaPath(IVehicleModelYear),
     },
+    isArray: false,
   })
   @ApiBadRequestResponse({
     type: GenericHttpBadRequestResponse,
   })
-  @HttpCode(201)
-  async createVehicleModelYear(
-    @Body() data: CreateVehicleModelYearDto,
-  ): Promise<IVehicleModelYear> {
-    return await this.vehicleModelYearService.create(data);
+  async getVehicleModelYear(@Param() param: GetVehicleModelYearDto) {
+    return await this.vehicleModelYearService.get(param.id);
   }
 
   @Get()
@@ -71,6 +71,24 @@ export class VehicleModelYearController {
       brandId,
       vehicleModelId,
     });
+  }
+
+  @Post()
+  @ApiCreatedResponse({
+    description: 'Create vehicle model year',
+    type: IVehicleModelYear,
+    schema: {
+      $ref: getSchemaPath(IVehicleModelYear),
+    },
+  })
+  @ApiBadRequestResponse({
+    type: GenericHttpBadRequestResponse,
+  })
+  @HttpCode(201)
+  async createVehicleModelYear(
+    @Body() data: CreateVehicleModelYearDto,
+  ): Promise<IVehicleModelYear> {
+    return await this.vehicleModelYearService.create(data);
   }
 
   @Patch()

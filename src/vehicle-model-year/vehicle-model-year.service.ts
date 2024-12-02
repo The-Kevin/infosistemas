@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import {
   CreateVehicleModelYearDto,
   ReturnListVehicleModelYearDto,
@@ -41,6 +45,27 @@ export class VehicleModelYearService {
         },
       },
     });
+  }
+  async get(id: string): Promise<IVehicleModelYear> {
+    const vehicleModelYear =
+      await this.prismaService.vehicleModelYear.findUnique({
+        where: {
+          id,
+        },
+        include: {
+          model: {
+            include: {
+              brand: true,
+              vehicleModelYears: false,
+            },
+          },
+        },
+      });
+
+    if (!vehicleModelYear)
+      throw new NotFoundException('Vehicle model year not founded!');
+
+    return vehicleModelYear;
   }
   async list({
     limit,

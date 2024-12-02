@@ -30,6 +30,11 @@ export class CreateVehicleModelYearDto {
   @MaxLength(11)
   renavam: string;
 }
+export class GetVehicleModelYearDto {
+  @ApiProperty({ required: true })
+  @IsUUID()
+  id: string;
+}
 export class ListVehicleModelYearDto {
   @ApiProperty({
     required: false,

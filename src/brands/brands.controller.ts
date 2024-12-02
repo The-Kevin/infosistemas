@@ -40,7 +40,7 @@ export class BrandsController {
     schema: {
       $ref: getSchemaPath(IBrand),
     },
-    isArray: true,
+    isArray: false,
   })
   @ApiBadRequestResponse({
     type: GenericHttpBadRequestResponse,

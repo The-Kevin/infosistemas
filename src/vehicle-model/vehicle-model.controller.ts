@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   HttpCode,
+  Param,
   Patch,
   Post,
   Query,
@@ -12,6 +13,7 @@ import { VehicleModelService } from './vehicle-model.service';
 import {
   CreateVehicleModelDto,
   DeleteVehicleModelDTO,
+  GetVehicleModelDto,
   ListVehicleModelDto,
   ReturnListVehicleModelDto,
   UpdateVehicleModelDto,
@@ -30,6 +32,22 @@ import { IVehicleModel } from './interfaces/vehicle-model.interface';
 @Controller('vehicle-model')
 export class VehicleModelController {
   constructor(private vehicleModelService: VehicleModelService) {}
+
+  @Get(':id')
+  @ApiOkResponse({
+    description: 'Get one vehicle model',
+    type: IVehicleModel,
+    schema: {
+      $ref: getSchemaPath(IVehicleModel),
+    },
+    isArray: false,
+  })
+  @ApiBadRequestResponse({
+    type: GenericHttpBadRequestResponse,
+  })
+  async getVehicleModel(@Param() param: GetVehicleModelDto) {
+    return await this.vehicleModelService.get(param.id);
+  }
 
   @Get()
   @ApiOkResponse({

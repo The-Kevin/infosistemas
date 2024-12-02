@@ -23,6 +23,11 @@ export class CreateVehicleModelDto {
   brandId: string;
 }
 
+export class GetVehicleModelDto {
+  @ApiProperty({ required: true })
+  @IsUUID()
+  id: string;
+}
 export class ListVehicleModelDto {
   @ApiProperty({ required: false })
   @IsOptional()
