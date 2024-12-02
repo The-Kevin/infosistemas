@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { VehicleModelYearService } from './vehicle-model-year.service';
 import { PrismaService } from '../database/prisma/prisma.service';
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 
 describe('VehicleModelYearService', () => {
   let service: VehicleModelYearService;
@@ -19,6 +19,7 @@ describe('VehicleModelYearService', () => {
             },
             vehicleModelYear: {
               create: jest.fn(),
+              findUnique: jest.fn(),
               findMany: jest.fn(),
               count: jest.fn(),
               update: jest.fn(),
@@ -99,6 +100,60 @@ describe('VehicleModelYearService', () => {
       await expect(service.create(createDto)).rejects.toThrow(
         new BadRequestException('Vehicle model is not exist'),
       );
+    });
+  });
+
+  describe('get', () => {
+    it('should return the vehicle model year when found', async () => {
+      const mockVehicleModelYear = {
+        id: '123',
+        name: 'Test Model Year',
+        year: 2021,
+        plate: 'ABC1234',
+        renavam: '123456789',
+        model: {
+          id: '1',
+          name: 'Test Model',
+          brand: { id: '10', name: 'Test Brand' },
+        },
+      };
+
+      (
+        prismaService.vehicleModelYear.findUnique as jest.Mock
+      ).mockResolvedValue(mockVehicleModelYear);
+
+      const result = await service.get('123');
+      expect(result).toEqual(mockVehicleModelYear);
+      expect(prismaService.vehicleModelYear.findUnique).toHaveBeenCalledWith({
+        where: { id: '123' },
+        include: {
+          model: {
+            include: {
+              brand: true,
+              vehicleModelYears: false,
+            },
+          },
+        },
+      });
+    });
+
+    it('should throw NotFoundException when the vehicle model year is not found', async () => {
+      (
+        prismaService.vehicleModelYear.findUnique as jest.Mock
+      ).mockResolvedValue(null);
+
+      await expect(service.get('123')).rejects.toThrow(NotFoundException);
+      expect(prismaService.vehicleModelYear.findUnique).toHaveBeenCalledWith({
+        where: { id: '123' },
+        include: {
+          model: {
+            include: {
+              brand: true,
+              vehicleModelYears: false,
+            },
+          },
+        },
+      });
     });
   });
 

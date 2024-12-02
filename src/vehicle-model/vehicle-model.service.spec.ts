@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { VehicleModelService } from './vehicle-model.service';
 import { PrismaService } from '../database/prisma/prisma.service';
 import {
@@ -30,6 +30,7 @@ describe('VehicleModelService', () => {
             vehicleModel: {
               create: jest.fn(),
               count: jest.fn(),
+              findUnique: jest.fn(),
               findMany: jest.fn(),
               update: jest.fn(),
               deleteMany: jest.fn(),
@@ -88,6 +89,44 @@ describe('VehicleModelService', () => {
     });
   });
 
+  describe('get', () => {
+    it('should return the vehicle model year when found', async () => {
+      const mockVehicleModel = {
+        id: '123',
+        name: 'Test Model Year',
+        brand: { id: '10', name: 'Test Brand' },
+      };
+
+      (prismaService.vehicleModel.findUnique as jest.Mock).mockResolvedValue(
+        mockVehicleModel,
+      );
+
+      const result = await service.get('123');
+      expect(result).toEqual(mockVehicleModel);
+      expect(prismaService.vehicleModel.findUnique).toHaveBeenCalledWith({
+        where: { id: '123' },
+        include: {
+          brand: true,
+          vehicleModelYears: true,
+        },
+      });
+    });
+
+    it('should throw NotFoundException when the vehicle model year is not found', async () => {
+      (prismaService.vehicleModel.findUnique as jest.Mock).mockResolvedValue(
+        null,
+      );
+
+      await expect(service.get('123')).rejects.toThrow(NotFoundException);
+      expect(prismaService.vehicleModel.findUnique).toHaveBeenCalledWith({
+        where: { id: '123' },
+        include: {
+          brand: true,
+          vehicleModelYears: true,
+        },
+      });
+    });
+  });
   describe('list', () => {
     it('should return a paginated list of vehicle models', async () => {
       const handleDate = new Date();

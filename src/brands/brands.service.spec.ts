@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { BrandsService } from './brands.service';
 import { PrismaService } from '../database/prisma/prisma.service';
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 
 describe('BrandsService', () => {
   let service: BrandsService;
@@ -35,6 +35,47 @@ describe('BrandsService', () => {
     expect(service).toBeDefined();
   });
 
+  describe('get', () => {
+    it('should return the vehicle model year when found', async () => {
+      const mockBrand = {
+        id: '123',
+        name: 'Test Model Year',
+      };
+
+      (prismaService.brand.findUnique as jest.Mock).mockResolvedValue(
+        mockBrand,
+      );
+
+      const result = await service.get('123');
+      expect(result).toEqual(mockBrand);
+      expect(prismaService.brand.findUnique).toHaveBeenCalledWith({
+        where: { id: '123' },
+        include: {
+          vehicleModels: {
+            include: {
+              vehicleModelYears: true,
+            },
+          },
+        },
+      });
+    });
+
+    it('should throw NotFoundException when the vehicle model year is not found', async () => {
+      (prismaService.brand.findUnique as jest.Mock).mockResolvedValue(null);
+
+      await expect(service.get('123')).rejects.toThrow(NotFoundException);
+      expect(prismaService.brand.findUnique).toHaveBeenCalledWith({
+        where: { id: '123' },
+        include: {
+          vehicleModels: {
+            include: {
+              vehicleModelYears: true,
+            },
+          },
+        },
+      });
+    });
+  });
   describe('list', () => {
     it('should return a paginated list of brands', async () => {
       const mockData = [
