@@ -1,85 +1,46 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Infosistemas Desafio Técnico
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Endpoints
+  - (Documentação Swagger) `/api`
+  - (GET/POST/PATCH/DELETE) `/brands`
+  - (GET/POST/PATCH/DELETE) `/vehicle-model`
+  - (GET/POST/PATCH/DELETE) `/vehicle-model-year`
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+  **Obs**: Existe um arquivo `.json` localizado em `/docs` com todos os endpoints disponíveis para importação no POSTMAN.
 
-## Description
+## Especificações do Servidor
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### HTTP/HTTPS
+  O servidor conta com diversas rotas RESTful. Além disso, há uma variável de ambiente chamada `SSL` (booleano) que define qual protocolo de comunicação será utilizado.
 
-## Project setup
+  **Importante**: Os certificados e chaves públicas e privadas são para uso exclusivo de conexão localhost. Não devem e não serão utilizados para ambiente de produção ou ambientes expostos.
 
-```bash
-$ npm install
-```
+### Banco de Dados
+  O servidor se conecta a um banco de dados **PostgreSQL**. Considerando o caráter da aplicação, o banco foi escolhido por sua consistência nos dados, além da estrutura SQL ser ideal para as relações entre as tabelas.
 
-## Compile and run the project
+  A variável de ambiente para sua conexão é `DATABASE_URL`, que deve seguir o formato **URI PostgreSQL**.
 
-```bash
-# development
-$ npm run start
+  Tanto o histórico de alterações no banco de dados quanto novas mudanças devem ser devidamente feitas e documentadas nos arquivos de migrações localizados em `/prisma/migrations` e no arquivo `/prisma/schema.prisma`.
 
-# watch mode
-$ npm run start:dev
+  Para facilitar o ambiente de desenvolvimento, há um arquivo `docker-compose.yml` com um PostgreSQL configurado.
 
-# production mode
-$ npm run start:prod
-```
+  Abaixo está o diagrama do banco de dados:  
+  ![DB Diagram](docs/database_diagram.png)
 
-## Run tests
+### Pontos de Melhoria
+  - É perceptível que o código carece de um sistema de autenticação e autorização para os métodos.
+  - Automação de ferramentas para manter a qualidade do código, como pre-commit ou pre-push.
+  - Sistema automatizado de CD (Continuous Delivery).
 
-```bash
-# unit tests
-$ npm run test
+## Overview Pessoal do Desafio
 
-# e2e tests
-$ npm run test:e2e
+### Opinião do Desenvolvedor
+  Gostei bastante do desafio. O fato de ser aberto à escolha do candidato deixa tudo mais interessante.
 
-# test coverage
-$ npm run test:cov
-```
+### Dificuldade de Desenvolvimento
+  Os requisitos obrigatórios não foram muito desafiadores, porém a utilização do `Mocha` como ferramenta de testes unitários gerou erros de compatibilidade com o TypeScript, mesmo utilizando o `ts-node`. Como não tive muito tempo para investigar o problema em baixo nível, optei por escrever os testes unitários utilizando `Jest`, já que é a ferramenta recomendada pela documentação do framework `NestJS` (referência à documentação [aqui](https://docs.nestjs.com/fundamentals/testing)).
 
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+### Pontos Extras
+  - A existência de testes somente para arquivos de serviços é intencional para separar os testes unitários (exigência obrigatória do desafio) dos testes de integração ou end-to-end (E2E). Controllers e rotas HTTP não possuem cobertura de testes, apenas funções de serviços, as quais contêm a lógica de negócios e conexões com o banco de dados.
+  
+  - Não há alterações diretas de relacionamentos pela API. Isso se deve à forma como o banco de dados foi projetado. Todas as relações são 1:N com **onCascade**. A única maneira de alterar um relacionamento é pelos métodos PATCH, onde é possível alterar o ID da relação pai (BRAND -> VEHICLE_MODEL -> VEHICLE_MODEL_YEAR).
