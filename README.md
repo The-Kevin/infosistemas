@@ -37,6 +37,7 @@
   - É perceptível que o código carece de um sistema de autenticação e autorização para os métodos.
   - Automação de ferramentas para manter a qualidade do código, como pre-commit ou pre-push.
   - Sistema automatizado de CD (Continuous Delivery).
+  - Eventualmente, precisaremos separar dados de veículos singulares, como placa e RENAVAM, do ano-modelo do veículo. Como não foi especificado no desafio a lógica de veículos singulares, decidi integrá-los na mesma tabela. Caso isso seja um critério de avaliação, por favor, me avise para que eu possa corrigir o modelo. 
 
 ## Utilização do Programa
 
