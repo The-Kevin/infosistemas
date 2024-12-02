@@ -1,11 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/database/prisma/prisma.service';
+import { PrismaService } from '../database/prisma/prisma.service';
 import {
   CreateVehicleModelDto,
   ReturnListVehicleModelDto,
   UpdateVehicleModelDto,
 } from './dtos/vehicle-model.dto';
-import IGenericOptions from 'src/utils/interfaces/genericOptions.interface';
+import IGenericOptions from '../utils/interfaces/genericOptions.interface';
 import { IVehicleModel } from './interfaces/vehicle-model.interface';
 
 @Injectable()
