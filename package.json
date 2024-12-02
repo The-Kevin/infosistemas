@@ -12,6 +12,7 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
+    "cert:ssl:generate": "mkcert -key-file ./src/cert/key.pem -cert-file ./src/cert/cert.pem localhost",
     "migrate:dev": "prisma migrate dev",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",

@@ -10,6 +10,12 @@
 
 ## Especificações do Servidor
 
+## Versionamento
+  NodeJS: v22
+  NestJS: v10
+  PrismaClient: v5.22
+  Postgres: ^v17
+
 ### HTTP/HTTPS
   O servidor conta com diversas rotas RESTful. Além disso, há uma variável de ambiente chamada `SSL` (booleano) que define qual protocolo de comunicação será utilizado.
 
@@ -31,6 +37,60 @@
   - É perceptível que o código carece de um sistema de autenticação e autorização para os métodos.
   - Automação de ferramentas para manter a qualidade do código, como pre-commit ou pre-push.
   - Sistema automatizado de CD (Continuous Delivery).
+
+## Utilização do Programa
+
+### Ambiente de Desenvolvimento (Linux/macOS)
+  - Baixar as dependências:  
+    ```bash
+    npm install
+    ```
+  - Iniciar o banco de dados local:  
+    ```bash
+    docker compose up -d
+    ```
+  - Gerar o arquivo `.env`:  
+    ```bash
+    cp .env.example .env
+    ```
+  - Caso o servidor deva ser executado em HTTPS, a variável de ambiente `SSL` deve estar configurada como `true`, e os certificados devem ser gerados com o comando:  
+    ```bash
+    npm run cert:ssl:generate
+    ```
+  - Executar as migrações no banco de dados:  
+    ```bash
+    npm run migrate:dev
+    ```
+  - Iniciar o servidor:  
+    ```bash
+    npm run start
+    ```
+
+### Ambiente de Desenvolvimento (Windows)
+  - Baixar as dependências:  
+    ```cmd
+    npm install
+    ```
+  - Iniciar o banco de dados local:  
+    ```cmd
+    docker-compose up -d
+    ```
+  - Gerar o arquivo `.env`:  
+    ```cmd
+    copy .env.example .env
+    ```
+  - Caso o servidor deva ser executado em HTTPS, a variável de ambiente `SSL` deve estar configurada como `true`, e os certificados devem ser gerados com o comando:  
+    ```cmd
+    npm run cert:ssl:generate
+    ```
+  - Executar as migrações no banco de dados:  
+    ```cmd
+    npm run migrate:dev
+    ```
+  - Iniciar o servidor:  
+    ```cmd
+    npm run start
+    ```
 
 ## Overview Pessoal do Desafio
 
