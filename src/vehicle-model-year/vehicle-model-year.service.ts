@@ -4,9 +4,9 @@ import {
   ReturnListVehicleModelYearDto,
   UpdateVehicleModelYearDto,
 } from './dtos/vehicle-model-year.dto';
-import { PrismaService } from 'src/database/prisma/prisma.service';
+import { PrismaService } from '../database/prisma/prisma.service';
 import { IVehicleModelYear } from './interfaces/vehicle-model-year.interface';
-import IGenericOptions from 'src/utils/interfaces/genericOptions.interface';
+import IGenericOptions from '../utils/interfaces/genericOptions.interface';
 
 @Injectable()
 export class VehicleModelYearService {

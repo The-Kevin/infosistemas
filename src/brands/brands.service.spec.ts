@@ -59,7 +59,16 @@ describe('BrandsService', () => {
       const result = await service.create({ name: 'Brand A' });
       expect(result).toEqual(mockBrand);
       expect(prismaService.brand.create).toHaveBeenCalledWith({
-        data: { name: 'Brand A' },
+        data: {
+          name: 'Brand A',
+        },
+        include: {
+          vehicleModels: {
+            include: {
+              vehicleModelYears: true,
+            },
+          },
+        },
       });
     });
   });
@@ -88,7 +97,7 @@ describe('BrandsService', () => {
 
       const result = await service.update({
         id: '1',
-        body: { createdAt: new Date('6/6/1666') }, //hacked
+        body: { createdAt: new Date('6/6/1666') } as any, //hacked
       });
       expect(result).toEqual(mockBrand);
       expect(prismaService.brand.update).not.toHaveBeenCalledWith({
