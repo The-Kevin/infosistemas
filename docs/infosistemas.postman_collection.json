@@ -1,0 +1,433 @@
+{
+	"info": {
+		"_postman_id": "ccf0e6be-9262-42c8-b660-c889bedb2fad",
+		"name": "infosistemas",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39210876"
+	},
+	"item": [
+		{
+			"name": "brands",
+			"item": [
+				{
+					"name": "get_one_ brand",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/brands/24cfd7ac-226a-47b0-b8dd-e8cf61e9fcc6",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"brands",
+								"24cfd7ac-226a-47b0-b8dd-e8cf61e9fcc6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create_brand",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Main brand\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/brands",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"brands"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list_brands",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/brands?page=1&sort=name&limit=10",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"brands"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "sort",
+									"value": "name"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_brands",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"random uuid\",\n    \"body\": {\n        \"name\": \"updated name\",\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/brands",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"brands"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_brands",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ids\": [\n        \"random uuid\"\n    ]   \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/brands",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"brands"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "vehicle-model",
+			"item": [
+				{
+					"name": "create-vehicle-model",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"man vehicle model\",\n    \"brandId\": \"random uuid\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/vehicle-model",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"vehicle-model"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list-vehicle-model",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/vehicle-model?brandId=random uuid",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"vehicle-model"
+							],
+							"query": [
+								{
+									"key": "brandId",
+									"value": "random uuid"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-vehicle-model",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"random uuid\",\n    \"body\": {\n        \"name\": \"updated name\",\n        \"brandId\": \"random uuid\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/vehicle-model",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"vehicle-model"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-vehicle-model",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ids\": [\"random uuid\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/vehicle-model",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"vehicle-model"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_one-vehicle-model",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/vehicle-model/randomUuid",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"vehicle-model",
+								"randomUuid"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "vehicle-model-year",
+			"item": [
+				{
+					"name": "get_one-vehicle-model-year",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/vehicle-model-year/randomUuid",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"vehicle-model-year",
+								"randomUuid"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create-vehicle-model-year",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"main vehcle model year\",\n    \"year\": 2024,\n    \"modelId\": \"radom uuid\",\n    \"plate\": \"ABCDE123\",\n    \"renavam\": \"ABCDEFGHIJK\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/vehicle-model-year",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"vehicle-model-year"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list-vehicle-model-year",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/vehicle-model-year?brandId=random uuid&vehicleModelId=random uuid",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"vehicle-model-year"
+							],
+							"query": [
+								{
+									"key": "brandId",
+									"value": "random uuid"
+								},
+								{
+									"key": "vehicleModelId",
+									"value": "random uuid"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-vehicle-model-year",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"random uuid\",\n    \"body\": {\n        \"name\": \"updated name\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/vehicle-model-year",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"vehicle-model-year"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-vehicle-model-year",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ids\": [\"random uuid\"]\n   \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/vehicle-model-year",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"vehicle-model-year"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
