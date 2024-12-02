@@ -11,5 +11,5 @@ export class IBrand extends IGenericModel {
     isArray: true,
     required: false,
   })
-  models?: IVehicleModel[];
+  vehicleModels?: IVehicleModel[];
 }

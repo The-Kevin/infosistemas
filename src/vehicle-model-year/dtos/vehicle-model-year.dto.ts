@@ -1,15 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IVehicleModelYear } from '../interfaces/vehicle-model-year.interface';
 import GenericListMetadata from 'src/utils/interfaces/genericListMetadata.interface';
-import IGenericModel from 'src/utils/interfaces/genericModel.interface';
-import ExcludeGenericProps from 'src/utils/interfaces/excludeProps.interface';
-import { IVehicleModel } from 'src/vehicle-model/interfaces/vehicle-model.interface';
 import {
   ArrayNotEmpty,
   IsInt,
   IsOptional,
   IsPositive,
   IsString,
+  IsUUID,
   MaxLength,
   MinLength,
 } from 'class-validator';
@@ -67,16 +65,26 @@ export class ReturnListVehicleModelYearDto {
   meta: GenericListMetadata;
 }
 
+class BodyUpdateVehicleModelYearDto {
+  @ApiProperty()
+  name: string;
+  @ApiProperty()
+  year: number;
+  @ApiProperty()
+  plate: string;
+  @ApiProperty()
+  renavam: string;
+  @ApiProperty()
+  modelId: string;
+}
 export class UpdateVehicleModelYearDto {
+  @ApiProperty()
+  @IsUUID()
   id: string;
-  body: Partial<
-    ExcludeGenericProps<
-      IVehicleModelYear,
-      IGenericModel & { model: IVehicleModel }
-    > & {
-      modelId: string;
-    }
-  >;
+  @ApiProperty({
+    type: BodyUpdateVehicleModelYearDto,
+  })
+  body: BodyUpdateVehicleModelYearDto;
 }
 export class DeleteVehicleModelYearsDTO {
   @ApiProperty({

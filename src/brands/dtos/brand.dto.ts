@@ -10,7 +10,7 @@ import {
   MaxLength,
   ValidateNested,
 } from 'class-validator';
-import { ApiProperty, PartialType } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import GenericListMetadata from 'src/utils/interfaces/genericListMetadata.interface';
 import { Transform, Type } from 'class-transformer';
 import { isKeyOfInterface } from 'src/utils/handleFunctions';
@@ -25,6 +25,12 @@ export class CreateBrandDTO {
   })
   @MaxLength(255)
   name: string;
+}
+
+export class GetBrandDto {
+  @ApiProperty({ required: true })
+  @IsUUID()
+  id: string;
 }
 
 export class ListBrandDto {
@@ -62,6 +68,14 @@ export class ReturnListBrandsDTO {
   meta: GenericListMetadata;
 }
 
+export class BodyUpdateBrandDTO {
+  @ApiProperty({
+    required: true,
+  })
+  @MaxLength(255)
+  name: string;
+}
+
 export class UpdateBrandDTO {
   @ApiProperty({
     required: true,
@@ -71,11 +85,11 @@ export class UpdateBrandDTO {
 
   @ApiProperty({
     required: false,
-    type: () => PartialType(IBrand),
+    type: () => BodyUpdateBrandDTO,
   })
   @ValidateNested()
-  @Type(() => PartialType(IBrand))
-  body?: Partial<IBrand>;
+  @Type(() => BodyUpdateBrandDTO)
+  body?: BodyUpdateBrandDTO;
 }
 
 export class DeleteBrandDTO {
