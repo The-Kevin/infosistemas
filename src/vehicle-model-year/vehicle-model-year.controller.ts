@@ -63,11 +63,13 @@ export class VehicleModelYearController {
   async listVehicleModelYear(
     @Query() query: ListVehicleModelYearDto,
   ): Promise<ReturnListVehicleModelYearDto> {
-    const { page, limit, sort } = query;
+    const { page, limit, sort, brandId, vehicleModelId } = query;
     return await this.vehicleModelYearService.list({
       page,
       limit,
       sort,
+      brandId,
+      vehicleModelId,
     });
   }
 

@@ -13,7 +13,7 @@ export class VehicleModelService {
   constructor(private prismaService: PrismaService) {}
   async create(data: CreateVehicleModelDto): Promise<IVehicleModel> {
     return await this.prismaService.$transaction(async (tx) => {
-      const brand = await this.prismaService.brand.findUnique({
+      const brand = await tx.brand.findUnique({
         where: { id: data.brandId },
       });
 
@@ -32,15 +32,30 @@ export class VehicleModelService {
     });
   }
   async list({
+    brandId,
     limit,
     page,
     sort,
-  }: IGenericOptions): Promise<ReturnListVehicleModelDto> {
+  }: IGenericOptions & {
+    brandId?: string;
+  }): Promise<ReturnListVehicleModelDto> {
     const isDescending = sort.startsWith('-');
     const field = sort.replace('-', '');
-    const totalItems = await this.prismaService.vehicleModel.count();
+
+    let where = {};
+    if (brandId) {
+      where = Object.assign(where, {
+        brand: {
+          id: brandId,
+        },
+      });
+    }
+    const totalItems = await this.prismaService.vehicleModel.count({
+      where,
+    });
 
     const data = await this.prismaService.vehicleModel.findMany({
+      where,
       skip: (page - 1) * limit,
       take: limit,
       orderBy: {

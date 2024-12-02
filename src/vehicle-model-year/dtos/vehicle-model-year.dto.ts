@@ -31,6 +31,19 @@ export class CreateVehicleModelYearDto {
   renavam: string;
 }
 export class ListVehicleModelYearDto {
+  @ApiProperty({
+    required: false,
+  })
+  @IsOptional()
+  @IsUUID()
+  brandId: string;
+  @ApiProperty({
+    required: false,
+  })
+  @IsOptional()
+  @IsUUID()
+  vehicleModelId: string;
+
   @ApiProperty({ example: 1, required: false })
   @IsOptional()
   @IsInt()

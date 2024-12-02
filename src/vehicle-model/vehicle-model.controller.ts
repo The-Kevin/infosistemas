@@ -47,11 +47,12 @@ export class VehicleModelController {
   async listVehicleModel(
     @Query() query: ListVehicleModelDto,
   ): Promise<ReturnListVehicleModelDto> {
-    const { limit, page, sort } = query;
+    const { limit, page, sort, brandId } = query;
     return await this.vehicleModelService.list({
       limit,
       page,
       sort,
+      brandId,
     });
   }
 

@@ -1,4 +1,4 @@
-import IGenericModel from 'src/utils/interfaces/genericModel.interface';
+import IGenericModel from '../../utils/interfaces/genericModel.interface';
 import { IBrand } from '../interfaces/brand.interface';
 import {
   ArrayNotEmpty,
@@ -11,9 +11,9 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import GenericListMetadata from 'src/utils/interfaces/genericListMetadata.interface';
+import GenericListMetadata from '../../utils/interfaces/genericListMetadata.interface';
 import { Transform, Type } from 'class-transformer';
-import { isKeyOfInterface } from 'src/utils/handleFunctions';
+import { isKeyOfInterface } from '../../utils/handleFunctions';
 export class HandleIBrand extends IGenericModel {
   @ApiProperty()
   name: string;

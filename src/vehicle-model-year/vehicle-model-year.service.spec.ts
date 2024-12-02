@@ -108,7 +108,7 @@ describe('VehicleModelYearService', () => {
         { id: '1', name: 'Year 1', model: { name: 'Model 1' } },
         { id: '2', name: 'Year 2', model: { name: 'Model 2' } },
       ] as any;
-      const options = { limit: 2, page: 1, sort: 'name' };
+      const options = { limit: 2, page: 1, sort: 'name' } as any;
       const totalItems = 10;
 
       jest
@@ -121,6 +121,9 @@ describe('VehicleModelYearService', () => {
       const result = await service.list(options);
 
       expect(prismaService.vehicleModelYear.findMany).toHaveBeenCalledWith({
+        where: {
+          AND: [],
+        },
         skip: 0,
         take: 2,
         orderBy: { name: 'asc' },

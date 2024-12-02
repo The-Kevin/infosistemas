@@ -46,12 +46,40 @@ export class VehicleModelYearService {
     limit,
     page,
     sort,
-  }: IGenericOptions): Promise<ReturnListVehicleModelYearDto> {
+    brandId,
+    vehicleModelId,
+  }: IGenericOptions & {
+    brandId: string;
+    vehicleModelId: string;
+  }): Promise<ReturnListVehicleModelYearDto> {
     const isDescending = sort.startsWith('-');
     const field = sort.replace('-', '');
-    const totalItems = await this.prismaService.vehicleModelYear.count();
 
+    const where = {
+      AND: [],
+    };
+
+    if (brandId) {
+      where.AND.push({
+        model: {
+          brand: {
+            id: brandId,
+          },
+        },
+      });
+    }
+    if (vehicleModelId) {
+      where.AND.push({
+        model: {
+          id: vehicleModelId,
+        },
+      });
+    }
+    const totalItems = await this.prismaService.vehicleModelYear.count({
+      where,
+    });
     const data = await this.prismaService.vehicleModelYear.findMany({
+      where,
       skip: (page - 1) * limit,
       take: limit,
       orderBy: {

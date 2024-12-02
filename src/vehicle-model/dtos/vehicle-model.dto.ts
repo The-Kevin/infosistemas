@@ -7,6 +7,7 @@ import {
   IsOptional,
   IsPositive,
   IsString,
+  IsUUID,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { isKeyOfInterface } from 'src/utils/handleFunctions';
@@ -23,6 +24,11 @@ export class CreateVehicleModelDto {
 }
 
 export class ListVehicleModelDto {
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsUUID()
+  brandId: string;
+
   @ApiProperty({ example: 1, required: false })
   @IsOptional()
   @IsInt()
