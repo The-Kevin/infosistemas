@@ -9,9 +9,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     httpsOptions: isSSL
       ? {
-          key: fs.readFileSync('./src/cert/key.pem'),
-          cert: fs.readFileSync('./src/cert/cert.pem'),
-        }
+        key: fs.readFileSync('./src/cert/key.pem'),
+        cert: fs.readFileSync('./src/cert/cert.pem'),
+      }
       : undefined,
   });
   const config = new DocumentBuilder()
@@ -27,6 +27,7 @@ async function bootstrap() {
       transform: true,
     }),
   );
+  app.enableCors();
   await app.listen(process.env.PORT ?? 80);
 }
 bootstrap();
