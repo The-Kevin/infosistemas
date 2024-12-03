@@ -1,50 +1,60 @@
-# Infosistemas Desafio Técnico
+# API de Gestão de Veículos - Portfólio
+
+## Descrição do Projeto
+
+Este é o backend de uma aplicação voltada para o gerenciamento de veículos, permitindo o controle completo de marcas, modelos e anos-modelo. A API foi projetada para ser modular, escalável e fácil de usar, com suporte a operações CRUD e documentação interativa via Swagger.
+
+---
 
 ## Endpoints
-  - (Documentação Swagger) `/api`
-  - (GET/POST/PATCH/DELETE) `/brands`
-  - (GET/POST/PATCH/DELETE) `/vehicle-model`
-  - (GET/POST/PATCH/DELETE) `/vehicle-model-year`
+- Documentação Swagger: `/api`
+- CRUD para:
+  - `/brands` (marcas de veículos)
+  - `/vehicle-model` (modelos de veículos)
+  - `/vehicle-model-year` (anos-modelo de veículos)
 
-  **Obs**: Existe um arquivo `.json` localizado em `/docs` com todos os endpoints disponíveis para importação no POSTMAN.
+**Nota:** O projeto inclui um arquivo `.json` localizado em `/docs` para importação dos endpoints no POSTMAN.
 
-## Especificações do Servidor
+---
 
-## Versionamento
-  NodeJS: v22
-  NestJS: v10
-  PrismaClient: v5.22
-  Postgres: ^v17
+## Especificações Técnicas
 
-### HTTP/HTTPS
-  O servidor conta com diversas rotas RESTful. Além disso, há uma variável de ambiente chamada `SSL` (booleano) que define qual protocolo de comunicação será utilizado.
+### Stack Tecnológica
+- **Node.js**: v22
+- **NestJS**: v10
+- **PrismaClient**: v5.22
+- **PostgreSQL**: v17
 
-  **Importante**: Os certificados e chaves públicas e privadas são para uso exclusivo de conexão localhost. Não devem e não serão utilizados para ambiente de produção ou ambientes expostos.
+### Configuração HTTP/HTTPS
+A API suporta os protocolos HTTP e HTTPS, definidos por meio da variável de ambiente `SSL` (booleano).  
+- Certificados e chaves de segurança foram configurados para o ambiente **localhost**, garantindo testes seguros durante o desenvolvimento.  
+- **Importante:** Esses certificados não são utilizados em ambientes de produção.
 
 ### Banco de Dados
-  O servidor se conecta a um banco de dados **PostgreSQL**. Considerando o caráter da aplicação, o banco foi escolhido por sua consistência nos dados, além da estrutura SQL ser ideal para as relações entre as tabelas.
+- **PostgreSQL** foi utilizado pela consistência e suporte a estruturas relacionais.  
+- Variável de ambiente para conexão: `DATABASE_URL` (formato URI PostgreSQL).  
+- Migrações e mudanças de esquema são gerenciadas com Prisma. Os arquivos estão documentados em `/prisma/migrations` e no esquema `/prisma/schema.prisma`.  
 
-  A variável de ambiente para sua conexão é `DATABASE_URL`, que deve seguir o formato **URI PostgreSQL**.
+O projeto inclui um arquivo `docker-compose.yml` para configuração do banco em ambiente de desenvolvimento.
 
-  Tanto o histórico de alterações no banco de dados quanto novas mudanças devem ser devidamente feitas e documentadas nos arquivos de migrações localizados em `/prisma/migrations` e no arquivo `/prisma/schema.prisma`.
+Diagrama do banco de dados:  
+![DB Diagram](docs/database_diagram.png)
 
-  Para facilitar o ambiente de desenvolvimento, há um arquivo `docker-compose.yml` com um PostgreSQL configurado.
+---
 
-  Abaixo está o diagrama do banco de dados:  
-  ![DB Diagram](docs/database_diagram.png)
+## Principais Recursos e Funcionalidades
+- **Documentação interativa**: A API é totalmente documentada via Swagger, facilitando a exploração e o uso dos endpoints.
+- **Operações CRUD completas**: Gerencie marcas, modelos e anos-modelo de veículos de maneira fácil e eficiente.
+- **Escalabilidade**: Arquitetura modular que facilita a expansão de novos recursos.
 
-### Pontos de Melhoria
-  - É perceptível que o código carece de um sistema de autenticação e autorização para os métodos.
-  - Automação de ferramentas para manter a qualidade do código, como pre-commit ou pre-push.
-  - Sistema automatizado de CD (Continuous Delivery).
-  - Eventualmente, precisaremos separar dados de veículos singulares, como placa e RENAVAM, do ano-modelo do veículo. Como não foi especificado no desafio a lógica de veículos singulares, decidi integrá-los na mesma tabela. Caso isso seja um critério de avaliação, por favor, me avise para que eu possa corrigir o modelo. 
+---
 
-## Utilização do Programa
+## Instruções de Uso
 
 ### Ambiente de Desenvolvimento (Linux/macOS)
-  - Baixar as dependências:  
-    ```bash
-    npm install
+1. Instale as dependências:
+   ```bash
+   npm install
     ```
   - Iniciar o banco de dados local:  
     ```bash
@@ -92,16 +102,19 @@
     ```cmd
     npm run start
     ```
+---
 
-## Overview Pessoal do Desafio
+## Pontos de Melhoria e Planos Futuros
+- Implementar autenticação e autorização para maior segurança.
+- Adicionar ferramentas de automação como hooks de **pre-commit** e **pre-push**.
+- Expandir o sistema para separar dados específicos de veículos singulares (placa e RENAVAM), caso necessário.
 
-### Opinião do Desenvolvedor
-  Gostei bastante do desafio. O fato de ser aberto à escolha do candidato deixa tudo mais interessante.
+---
 
-### Dificuldade de Desenvolvimento
-  Os requisitos obrigatórios não foram muito desafiadores, porém a utilização do `Mocha` como ferramenta de testes unitários gerou erros de compatibilidade com o TypeScript, mesmo utilizando o `ts-node`. Como não tive muito tempo para investigar o problema em baixo nível, optei por escrever os testes unitários utilizando `Jest`, já que é a ferramenta recomendada pela documentação do framework `NestJS` (referência à documentação [aqui](https://docs.nestjs.com/fundamentals/testing)).
+## Observações Adicionais
+- Testes unitários foram desenvolvidos utilizando **Jest**, devido à sua compatibilidade com o framework NestJS.
+- A lógica de negócios está centralizada nos serviços, garantindo separação clara entre responsabilidades.
 
-### Pontos Extras
-  - A existência de testes somente para arquivos de serviços é intencional para separar os testes unitários (exigência obrigatória do desafio) dos testes de integração ou end-to-end (E2E). Controllers e rotas HTTP não possuem cobertura de testes, apenas funções de serviços, as quais contêm a lógica de negócios e conexões com o banco de dados.
-  
-  - Não há alterações diretas de relacionamentos pela API. Isso se deve à forma como o banco de dados foi projetado. Todas as relações são 1:N com **onCascade**. A única maneira de alterar um relacionamento é pelos métodos PATCH, onde é possível alterar o ID da relação pai (BRAND -> VEHICLE_MODEL -> VEHICLE_MODEL_YEAR).
+---
+
+Este projeto demonstra minha habilidade de desenvolver APIs bem estruturadas e escaláveis. Caso tenha interesse em colaborar ou obter mais informações, entre em contato!
